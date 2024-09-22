@@ -2,14 +2,12 @@ import swagger from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import userRouter from "./routes/userRoutes";
 
-const app = new Elysia()
+export const app = new Elysia({ prefix: "/api/v1" })
   .use(
     swagger({
-      provider: "swagger-ui",
-      swaggerOptions: {
-        displayRequestDuration: true,
+      scalarConfig: {
+        theme: "purple",
       },
-      exclude: ["/docs", "/docs/json"],
       path: "/docs",
       documentation: {
         tags: [
@@ -17,8 +15,18 @@ const app = new Elysia()
           { name: "Auth", description: "Authentication endpoints" },
         ],
         info: {
-          title: "Elysia Documentation",
+          title: "RosenHeim Booking",
           version: "1.0.0",
+          description: "A simple API for managing users",
+        },
+        components: {
+          securitySchemes: {
+            bearerAuth: {
+              type: "http",
+              scheme: "bearer",
+              bearerFormat: "JWT",
+            },
+          },
         },
       },
     })
@@ -34,12 +42,12 @@ const app = new Elysia()
         summary: "Hello world",
       },
     }
-  );
+  )
 
-// Middlewares
+  // Middlewares
 
-// Routers
-app.group("/api", (app) => app.use(userRouter)); // Use the userRouter
+  // Routers
+  .use(userRouter); // Use the userRouter
 
 // Listener
 app.listen(3000, () =>
