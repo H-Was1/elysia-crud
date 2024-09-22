@@ -129,7 +129,8 @@ userRouter
         tags: ["Auth"],
       },
     }
-  ).onBeforeHandle(({ set }) => {
+  )
+  .onBeforeHandle(({ set }) => {
     console.log("1");
   })
   .get(
